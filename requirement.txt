@@ -1,5 +1,5 @@
 # Essential Libraries
-numpy==1.21.4
+numpy==
 pandas
 matplotlib
 seaborn
@@ -8,13 +8,13 @@ h5py
 requests
 
 # Machine Learning & Deep Learning
-tensorflow==2.10.0
-keras==2.6.0
-scikit-learn==1.0.1
+tensorflow
+keras
+scikit-learn
 
 # Streamlit & UI Components
-streamlit==1.10.0
-streamlit-option-menu==0.3.13
+streamlit
+streamlit-option-menu
 
 # Other Dependencies
-pickle-mixin==1.0.2
+pickle-mixin
