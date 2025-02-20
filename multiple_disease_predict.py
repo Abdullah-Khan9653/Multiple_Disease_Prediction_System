@@ -25,8 +25,9 @@ class_mapping = {
 @st.cache_resource
 def load_breast_cancer_model():
     try:
-        base_url = "https://github.com/m3mentomor1/Breast-Cancer-Image-Classification/raw/main/splitted_model/"
+        base_url = "https://raw.githubusercontent.com/Abdullah-Khan9653/Multiple_Disease_Prediction_System/main/Breast-Cancer-Image-Classification-with-DenseNet121/splitted_model/"
         model_parts = [f"{base_url}model.h5.part{i:02d}" for i in range(1, 35)]
+        
         model_bytes = b''
         
         # Download and concatenate model parts
