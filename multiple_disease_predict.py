@@ -22,24 +22,37 @@ class_mapping = {
     2: 'Normal',
 }
 
-@st.cache(allow_output_mutation=True)
+@st.cache_resource
 def load_breast_cancer_model():
     try:
         base_url = "https://github.com/m3mentomor1/Breast-Cancer-Image-Classification/raw/main/splitted_model/"
         model_parts = [f"{base_url}model.h5.part{i:02d}" for i in range(1, 35)]
         model_bytes = b''
+        
+        # Download and concatenate model parts
         for part_url in model_parts:
             response = requests.get(part_url)
+            if response.status_code != 200:
+                raise Exception(f"Failed to download model part: {part_url}")
             model_bytes += response.content
-
+        
+        # Create a temporary file-like object
+        model_buffer = BytesIO(model_bytes)
+        
         custom_objects = {
             'Custom>Adam': tf.keras.optimizers.Adam,
             'Adam': tf.keras.optimizers.Adam
         }
-
-        with h5py.File(BytesIO(model_bytes), 'r') as hf:
-            model = tf.keras.models.load_model(hf, custom_objects=custom_objects, compile=False)
-            
+        
+        # Load the model using the buffer
+        with h5py.File(model_buffer, 'r') as hf:
+            model = tf.keras.models.load_model(
+                hf,
+                custom_objects=custom_objects,
+                compile=False
+            )
+        
+        # Compile the model
         model.compile(
             optimizer=tf.keras.optimizers.Adam(),
             loss='categorical_crossentropy',
@@ -47,6 +60,7 @@ def load_breast_cancer_model():
         )
         
         return model
+        
     except Exception as e:
         st.error(f"Error loading model: {str(e)}")
         return None
@@ -56,7 +70,16 @@ def predict_breast_cancer(image, model):
         return "Error: Model not loaded"
     
     try:
+        # Convert PIL Image to numpy array
         img_array = np.array(image)
+        
+        # Ensure the image has 3 channels (RGB)
+        if len(img_array.shape) == 2:  # If grayscale
+            img_array = np.stack((img_array,)*3, axis=-1)
+        elif img_array.shape[-1] == 4:  # If RGBA
+            img_array = img_array[..., :3]
+        
+        # Resize and preprocess
         img_array = tf.image.resize(img_array, (256, 256))
         img_array = tf.expand_dims(img_array, 0)
         img_array = img_array / 255.0
@@ -102,6 +125,7 @@ with st.sidebar:
             }
         }
     )
+
 
 # Diabetes Prediction Page
 if selected == 'Diabetes Scan':
@@ -331,7 +355,7 @@ if selected == "Breast Cancer Detection":
     if uploaded_file is not None:
         try:
             image = Image.open(uploaded_file)
-            st.image(image, caption='Uploaded Image.', use_column_width=True)
+            st.image(image, caption='Uploaded Image.', use_container_width=True)
 
             with st.spinner('Loading model...'):
                 model = load_breast_cancer_model()
