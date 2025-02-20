@@ -8,7 +8,7 @@ h5py
 requests
 
 # Machine Learning & Deep Learning
-tensorflow==2.6.2
+tensorflow
 keras
 scikit-learn
 
