@@ -11,9 +11,9 @@ import h5py
 from streamlit_option_menu import option_menu
 
 # loading the saved models
-diabetes_model = pickle.load(open('E:/Multiple Disease Prediction System/saved_model/diabetes_model.sav', 'rb'))
-heart_disease_model = pickle.load(open('E:/Multiple Disease Prediction System/saved_model/heart_disease_model.sav', 'rb'))
-parkinsons_model = pickle.load(open('E:/Multiple Disease Prediction System/saved_model/parkinsons_model.sav', 'rb'))
+diabetes_model = pickle.load(open(os.path.join('saved_model', 'diabetes_model.sav'), 'rb'))
+heart_disease_model = pickle.load(open(os.path.join('saved_model', 'heart_disease_model.sav'), 'rb'))
+parkinsons_model = pickle.load(open(os.path.join('saved_model', 'parkinsons_model.sav'), 'rb'))
 
 # Breast Cancer Model Functions
 class_mapping = {
