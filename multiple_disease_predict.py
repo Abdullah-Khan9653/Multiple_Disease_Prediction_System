@@ -1,4 +1,5 @@
 import os
+os.environ["STREAMLIT_SERVER_PORT"] = "10000"
 import pickle
 import streamlit as st 
 ## Streamlit run command: streamlit run "E:\Multiple Disease Prediction System\multiple_disease_predict.py" 
