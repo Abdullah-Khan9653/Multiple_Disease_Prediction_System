@@ -357,7 +357,8 @@ if selected == "Breast Cancer Detection":
     if uploaded_file is not None:
         try:
             image = Image.open(uploaded_file)
-            st.image(image, caption='Uploaded Image.', use_container_width=True)
+            st.image(image, caption='Uploaded Image.')
+
 
             with st.spinner('Loading model...'):
                 model = load_breast_cancer_model()
