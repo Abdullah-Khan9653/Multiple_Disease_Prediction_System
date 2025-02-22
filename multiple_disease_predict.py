@@ -1,5 +1,4 @@
 import os
-#port
 os.environ["STREAMLIT_SERVER_PORT"] = "10000"
 import pickle
 import streamlit as st 
@@ -24,20 +23,21 @@ class_mapping = {
     2: 'Normal',
 }
 
+# Load Breast Cancer Model from Local File
 @st.cache_resource
 def load_breast_cancer_model():
     try:
-        base_url = "https://raw.githubusercontent.com/Abdullah-Khan9653/Multiple_Disease_Prediction_System/main/Breast-Cancer-Image-Classification-with-DenseNet121/splitted_model/"
-        model_parts = [f"{base_url}model.h5.part{i:02d}" for i in range(1, 35)]
-        
-        model_bytes = b''
-        
-        # Download and concatenate model parts
-        for part_url in model_parts:
-            response = requests.get(part_url)
-            if response.status_code != 200:
-                raise Exception(f"Failed to download model part: {part_url}")
-            model_bytes += response.content
+        model_path = "E:\Multiple Disease Prediction System\saved_model\BCmodel.h5"
+        model = tf.keras.models.load_model(model_path, compile=False) 
+        model.compile(
+            optimizer=tf.keras.optimizers.Adam(),
+            loss='categorical_crossentropy',
+            metrics=['accuracy']
+        )
+        return model
+    except Exception as e:
+        st.error(f"Error loading model: {str(e)}")
+        return None
         
         # Create a temporary file-like object
         model_buffer = BytesIO(model_bytes)
