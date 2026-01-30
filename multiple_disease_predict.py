@@ -349,23 +349,9 @@ if selected == "Movement Disorder Check":
 
 # Breast Cancer Detection Page
 if selected == "Breast Cancer Detection":
-    st.title('Breast Cancer Detection using ML')
-    st.write("Upload a breast ultrasound image for classification")
-
-    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-
-    if uploaded_file is not None:
-        try:
-            image = Image.open(uploaded_file)
-            st.image(image, caption='Uploaded Image.')
-
-
-            with st.spinner('Loading model...'):
-                model = load_breast_cancer_model()
-
-            if model is not None:
-                with st.spinner('Making prediction...'):
-                    predicted_class = predict_breast_cancer(image, model)
-                    st.success(f"Prediction: {predicted_class}")
-        except Exception as e:
-            st.error(f"Error processing image: {str(e)}")
+    st.markdown(
+        """
+        <meta http-equiv="refresh" content="0; url=https://huggingface.co/spaces/Abdullah-khan9653/mediscan-ai.onrender.com">
+        """,
+        unsafe_allow_html=True
+    )
